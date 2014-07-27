@@ -154,24 +154,24 @@ Let's look at our linked containers using `docker ps`.
 
     $ docker ps
     CONTAINER ID  IMAGE                     COMMAND               CREATED             STATUS             PORTS                    NAMES
-    349169744e49  training/postgres:latest  su postgres -c '/usr  About a minute ago  Up About a minute  5432/tcp                 db, web/db
-    aed84ee21bde  training/webapp:latest    python app.py         16 hours ago        Up 2 minutes       0.0.0.0:49154->5000/tcp  web
+    aed84ee21bde  training/webapp:latest    python app.py         16 hours ago        Up About a minute       0.0.0.0:49154->5000/tcp  web
+    349169744e49  training/postgres:latest  su postgres -c '/usr  About a minute ago  Up 2 minutes  5432/tcp                 db, web/db
 
 We can see our named containers, `db` and `web`, and we can see that the `db`
 containers also shows `web/db` in the `NAMES` column. This tells us that the
-`web` container is linked to the `db` container in a parent/child relationship.
+`db` container is linked to the `web` container in a parent/child (`web/db`) relationship.
 
 So what does linking the containers do? Well we've discovered the link creates
-a parent-child relationship between the two containers. The child container,
-here `web`, can access information on the parent container `db`. To do this
+a parent-child relationship between the two containers. The parent container,
+here `web`, can access information on the child container `db`. To do this
 Docker creates a secure tunnel between the containers without the need to
 expose any ports externally on the container. You'll note when we started the
 `db` container we did not use either of the `-P` or `-p` flags. As we're
 linking the containers we don't need to expose the PostgreSQL database via the
 network.
 
-Docker exposes connectivity information for the parent container inside the
-child container in two ways:
+Docker exposes connectivity information for the child container inside the
+parent container in two ways:
 
 * Environment variables,
 * Updating the `/etc/hosts` file.
